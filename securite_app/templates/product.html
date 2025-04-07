@@ -1,0 +1,57 @@
+{% extends 'base.html' %} {% block title %}{{ product.name }} - E-Shop{%
+endblock %} {% block content %}
+<div class="product-detail">
+  <div class="product-image-large">
+    <img
+      src="{{ url_for('static', filename='images/' + product.image_url) }}"
+      alt="{{ product.name }}"
+    />
+  </div>
+
+  <div class="product-info-detailed">
+    <h2>{{ product.name }}</h2>
+    <p class="product-price-large">{{ product.price }} €</p>
+    <div class="product-description">
+      <h3>Description</h3>
+      <p>{{ product.description }}</p>
+    </div>
+    <button class="add-to-cart">Ajouter au panier</button>
+  </div>
+
+  <div class="product-comments">
+    <h3>Commentaires</h3>
+
+    {% if session.user_id %}
+    <form method="post" class="comment-form">
+      <div class="form-group">
+        <label for="content">Votre commentaire:</label>
+        <textarea id="content" name="content" rows="4" required></textarea>
+      </div>
+      <button type="submit">Ajouter</button>
+    </form>
+    {% else %}
+    <p>
+      <a href="{{ url_for('login') }}">Connectez-vous</a> pour laisser un
+      commentaire.
+    </p>
+    {% endif %}
+
+    <div class="comments-list">
+      {% if comments %} {% for comment in comments %}
+      <div class="comment">
+        <div class="comment-header">
+          <span class="comment-author">{{ comment.username }}</span>
+          <span class="comment-date">{{ comment.created_at }}</span>
+        </div>
+        <div class="comment-content">
+          <!-- Affichage du commentaire sans échapper le HTML (vulnérable au XSS) -->
+          {{ comment.content|safe }}
+        </div>
+      </div>
+      {% endfor %} {% else %}
+      <p>Aucun commentaire pour le moment.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

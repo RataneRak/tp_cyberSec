@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}E-Shop{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <h1>E-Shop</h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="{{ url_for('index') }}">Accueil</a></li>
+          {% if session.user_id %}
+          <li>
+            <a href="{{ url_for('logout') }}"
+              >Déconnexion ({{ session.username }})</a
+            >
+          </li>
+          {% if session.is_admin %}
+          <li><a href="{{ url_for('admin') }}">Administration</a></li>
+          {% endif %} {% else %}
+          <li><a href="{{ url_for('login') }}">Connexion</a></li>
+          <li><a href="{{ url_for('register') }}">Inscription</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      {% for category, message in get_flashed_messages(with_categories=true) %}
+      <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %} {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+      <p>&copy; 2023 E-Shop. Tous droits réservés.</p>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

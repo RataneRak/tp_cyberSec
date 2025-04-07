@@ -1,0 +1,82 @@
+{% extends 'base.html' %} {% block title %}Administration - E-Shop{% endblock %}
+{% block content %}
+<div class="admin-panel">
+  <h2>Panneau d'administration</h2>
+
+  <div class="admin-section">
+    <h3>Utilisateurs</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nom d'utilisateur</th>
+          <th>Email</th>
+          <th>Admin</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ user.id }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ 'Oui' if user.is_admin else 'Non' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="admin-section">
+    <h3>Produits</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nom</th>
+          <th>Prix</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products %}
+        <tr>
+          <td>{{ product.id }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.price }} €</td>
+          <td>
+            <a href="{{ url_for('product', product_id=product.id) }}">Voir</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="admin-section">
+    <h3>Commentaires récents</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Produit</th>
+          <th>Utilisateur</th>
+          <th>Contenu</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for comment in comments %}
+        <tr>
+          <td>{{ comment.id }}</td>
+          <td>{{ comment.name }}</td>
+          <td>{{ comment.username }}</td>
+          <td>{{ comment.content|truncate(50) }}</td>
+          <td>{{ comment.created_at }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
